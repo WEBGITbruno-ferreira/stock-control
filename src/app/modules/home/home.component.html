@@ -4,11 +4,12 @@
      <div class="flex justify-content-center align-content-center text-align-center">
         <!--LOGIN -->
 
-        <form action="">
+        <form >
           <p-card
           styleClass="mt-10"
           header="Login"
-          subheader="Faça Login com sua conta.">
+          subheader="Faça Login com sua conta."
+          *ngIf="loginCard">
 
 
           <div class="flex justify-content-center align-content-center text-align-center">
@@ -26,6 +27,8 @@
 
           <span
           class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
+          (click)="loginCard = !loginCard"
+          style="cursor: pointer;"
           >
             Criar Conta
           </span>
@@ -41,7 +44,9 @@
           <p-card
           styleClass="mt-10"
           header="Criar Conta"
-          subheader="Crie sua conta gratuitamente.">
+          subheader="Crie sua conta gratuitamente."
+          *ngIf="!loginCard"
+          >
 
 
           <div class="flex justify-content-center align-content-center text-align-center">
@@ -63,6 +68,8 @@
 
           <span
           class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
+          (click)="loginCard = !loginCard"
+          style="cursor: pointer;"
           >
             Fazer Login
           </span>
