@@ -8,6 +8,17 @@
 
 
 @media screen and ( min-width: 1400px) {
-  .grid{ background-position: top;}
+  .grid{
+    //background-position: top;
+    height: 99.3vh;
+    scroll-behavior: unset;
+  }
+
+}
+
+@media screen and ( max-width: 1000px) {
+  .grid{
+//   height: 100vmax;
+  }
 
 }
