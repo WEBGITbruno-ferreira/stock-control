@@ -12,6 +12,7 @@ import { DashboardHomeComponent } from './page/dashboard-home/dashboard-home.com
 import {SidebarModule} from "primeng/sidebar"
 import {ToolbarModule} from "primeng/toolbar"
 import { ChartModule } from 'primeng/chart';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,10 @@ import { ChartModule } from 'primeng/chart';
     ToolbarModule,
     CardModule,
     ToastModule,
-    ChartModule
+    ChartModule,
+
+    //shared
+    SharedModule
   ],
 
   providers: [MessageService, CookieService]
