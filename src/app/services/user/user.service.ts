@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 import { AuthRequest } from './../../models/interfaces/user/auth/AuthRequest';
 import { SignupUserRequest } from './../../models/interfaces/user/SignupUserRequest';
 
@@ -15,7 +16,7 @@ export class UserService {
 
   private API_URL = environment.API_URL
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService:CookieService) { }
 
   signupUser(requestDatas: SignupUserRequest): Observable<SignupUserResponse>{
     return this.http.post<SignupUserResponse>(`${this.API_URL}/user`, requestDatas)
@@ -24,5 +25,11 @@ export class UserService {
 
   authUser(requestDatas: AuthRequest ) : Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.API_URL}/auth`, requestDatas)
+  }
+
+  isLoggedIn(): boolean{
+    //verificar se o usuário possui um cookie na app com o nome que buscarmos.
+    const JWT_TOKEN = this.cookieService.get('USER_INFO')
+    return JWT_TOKEN ? true : false
   }
 }
