@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardHomeComponent } from './page/dashboard-home/dashboard-home.component';
 import {SidebarModule} from "primeng/sidebar"
 import {ToolbarModule} from "primeng/toolbar"
-
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import {ToolbarModule} from "primeng/toolbar"
     ButtonModule,
     ToolbarModule,
     CardModule,
-    ToastModule
+    ToastModule,
+    ChartModule
   ],
 
   providers: [MessageService, CookieService]
