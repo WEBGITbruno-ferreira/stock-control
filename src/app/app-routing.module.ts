@@ -13,6 +13,10 @@ const routes: Routes = [
   .then( (m) => m.DashboardModule),
   canActivate : [AuthGuard] },
 
+  {path : 'products',  loadChildren: ()=> import('./modules/products/products.module')
+  .then( (m) => m.ProductsModule),
+  canActivate : [AuthGuard]},
+
 ];
 
 @NgModule({
