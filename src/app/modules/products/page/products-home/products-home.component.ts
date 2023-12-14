@@ -1,3 +1,4 @@
+import { EventAction } from './../../../../models/interfaces/products/event/EventAction';
 import { MessageService } from 'primeng/api';
 import { GetAllProductsResponse } from './../../../../models/interfaces/products/response/GetAllProductsResponse';
 import { ProductsDataTransferService } from './../../../../shared/services/products/products-data-transfer.service';
@@ -64,6 +65,10 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
 
       }
     })
+  }
+
+  handleProductAction(event : EventAction): void{
+    console.log("event",event)
   }
 
   ngOnDestroy(): void {
