@@ -1,3 +1,4 @@
+import { DialogService, DynamicDialogComponent, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DeleteProductAction } from './../../../../models/interfaces/products/event/DeleteProductAction';
 import { EventAction } from './../../../../models/interfaces/products/event/EventAction';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -7,6 +8,7 @@ import { ProductsService } from './../../../../services/products/products.servic
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductFormComponent } from '../../components/product-form/product-form.component';
 
 @Component({
   selector: 'app-products-home',
@@ -17,13 +19,16 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject()
   public productsData : Array<GetAllProductsResponse> = []
 
+  private ref!: DynamicDialogRef
+
 
   constructor(
     private productsService : ProductsService,
     private productsDataTransferService : ProductsDataTransferService,
     private router : Router,
     private messageService : MessageService,
-    private confirmationService : ConfirmationService
+    private confirmationService : ConfirmationService,
+    private dialogService: DialogService
   ){}
 
 
@@ -71,6 +76,28 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
 
   handleProductAction(event : EventAction): void{
     console.log("event",event)
+
+    if(event){
+      this.ref = this.dialogService.open(ProductFormComponent, {
+        header: event.action,
+        width: '70%',
+        contentStyle: {overflow : 'auto'},
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productsData: this.productsData
+        }
+      })
+
+      this.ref.onClose
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next : (resp)=>{
+          this.getAPIProductsDatas()
+        }
+      })
+    }
   }
 
   //rever tipagem
