@@ -1,3 +1,4 @@
+import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
 import { ProductsDataTransferService } from './../../../../shared/services/products/products-data-transfer.service';
 import { GetAllProductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponse';
 import { ProductsService } from './../../../../services/products/products.service';
@@ -21,7 +22,7 @@ import { ProductEvent } from 'src/app/models/enums/productEvent';
 export class ProductFormComponent implements OnInit, OnDestroy {
 
   private readonly destroy$: Subject<void> = new Subject()
-  public productAction !: { event : EventAction, productDatas : Array<GetAllProductsResponse>}
+  public productAction !: { event : EventAction, productsData : Array<GetAllProductsResponse>}
   public productSelectedData !: GetAllProductsResponse
 
   productDatas : Array<GetAllProductsResponse> =[]
@@ -61,6 +62,16 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getAllCategories()
     this.productAction = this.ref.data
+
+    console.log(this.productAction)
+
+    if(this.productAction.event.action === this.editProductAction && this.productAction.productsData){
+      this.getProductSelectedData(this.productAction.event.id as string)
+    }
+
+    if(this.productAction.event.action === this.saleProductAction ) {
+      this.getProductDatas()
+    }
   }
 
 
@@ -122,13 +133,46 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   handleSubmitEdit(): void {
     if(this.editProductForm.value && this.editProductForm.valid) {
+        const requestEditProduct: EditProductRequest = {
+          name: this.editProductForm.value.name as string,
+          price: this.editProductForm.value.price as string,
+          description: this.editProductForm.value.description as string,
+          product_id: this.productAction?.event?.id as string,
+          amount: this.editProductForm.value.amount as number
+        }
 
+        this.productsService
+        .editProduct(requestEditProduct)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next : (response) => {
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: 'Editado com sucesso',
+                life: 2500
+            });
+
+            this.editProductForm.reset()
+          }, error : (err) => {
+
+            console.log(err)
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro ao editar',
+              life: 2500
+          });
+
+          this.editProductForm.reset()
+          }
+        })
     }
   }
 
   getProductSelectedData(productID : string) : void {
-    const allProducts = this.productAction?.productDatas
-
+    const allProducts = this.productAction?.productsData
+    alert('x')
     if(allProducts.length > 0){
       const productFiltered = allProducts.filter( item => item.id === productID)
 
