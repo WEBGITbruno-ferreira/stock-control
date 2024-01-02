@@ -2,10 +2,12 @@ import { DeleteCategoryAction } from './../../../../models/interfaces/categories
 import { GetCategoriesResponse } from './../../../../models/interfaces/categories/responses/GetCategoriesResponse';
 import { Subject, takeUntil } from 'rxjs';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CategoriesService } from './../../../../services/categories/categories.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
+import { CategoryFormComponent } from '../../components/category-form/category-form.component';
 
 @Component({
   selector: 'app-categories-home',
@@ -13,8 +15,10 @@ import { Router } from '@angular/router';
   styleUrls: []
 })
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
-  public categoriesDatas : Array<GetCategoriesResponse> = []
   private readonly destroy$ : Subject<void> = new Subject()
+  private ref!: DynamicDialogRef
+
+  public categoriesDatas : Array<GetCategoriesResponse> = []
 
   constructor(
     private categoriesService : CategoriesService,
@@ -72,6 +76,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       })
     }
   }
+
   deleteCategory(category_id: string) {
       if(category_id){
         this.categoriesService.deleteCategorie({category_id})
@@ -102,4 +107,27 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       }
   }
 
+  handleCategoryAction(event : EventAction){
+    if(event){
+      this.ref = this.dialogService.open(CategoryFormComponent, {
+        header: event.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto'},
+        baseZIndex: 1000,
+        maximizable: true,
+        data : {
+          event : event
+        }
+      });
+
+      this.ref.onClose
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(resp => {
+        this.getAllCategories()
+      })
+
+  }}
+
 }
+
+
