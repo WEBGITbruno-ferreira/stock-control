@@ -6,12 +6,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogService} from 'primeng/dynamicdialog';
-import { ToolbarNavigationComponent } from './components/toolbar-navigation/toolbar-navigation.component'
+import { ToolbarNavigationComponent } from './components/toolbar-navigation/toolbar-navigation.component';
+import { ShortenPipe } from './pipes/shorten/shorten.pipe'
 
 
 @NgModule({
   declarations: [
-    ToolbarNavigationComponent
+    ToolbarNavigationComponent,
+    ShortenPipe
   ],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, RouterModule,
@@ -21,7 +23,7 @@ import { ToolbarNavigationComponent } from './components/toolbar-navigation/tool
     ButtonModule
   ],
 
-  exports: [ToolbarNavigationComponent],
-  providers: [DialogService, CurrencyPipe]
+  exports: [ToolbarNavigationComponent, ShortenPipe],
+  providers: [DialogService, CurrencyPipe, ShortenPipe]
 })
 export class SharedModule { }
