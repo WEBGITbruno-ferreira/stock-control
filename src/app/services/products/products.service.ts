@@ -1,3 +1,4 @@
+import { SaleProductRequest } from './../../models/interfaces/products/request/SaleProductRequest';
 import { CreateProductResponse } from './../../models/interfaces/products/response/CreateProductResponse';
 import { CreateProductRequest } from './../../models/interfaces/products/request/CreateProductRequest';
 import { DeleteProductResponse } from './../../models/interfaces/products/response/DeleteProductResponse';
@@ -8,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
+import { SaleProductResponse } from 'src/app/models/interfaces/products/response/SaleProductResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +64,14 @@ export class ProductsService {
   editProduct (requestData : EditProductRequest): Observable<void> {
 
   return this.http.put<void>(`${this.API_URL}/product/edit`, requestData, this.httpOptions)
+  }
+
+  saleProduct(requestData : SaleProductRequest): Observable<SaleProductResponse> {
+
+    return this.http.put<SaleProductResponse>(`${this.API_URL}/product/sale`,
+    {amount : requestData.amount},
+    {...this.httpOptions, params: {product_id : requestData.product_id}})
+
   }
 
 }
