@@ -3,7 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthRequest } from './../../models/interfaces/user/auth/AuthRequest';
 import { SignupUserRequest } from './../../models/interfaces/user/SignupUserRequest';
 import { UserService } from './../../services/user/user.service';
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -13,7 +13,10 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnDestroy{
+export class HomeComponent implements OnDestroy, AfterViewInit{
+
+  @ViewChild('emailInputRef') public emailInputRef !: ElementRef
+  @ViewChild('passwordInputRef') public passwordInputRef !: ElementRef
   //para desinscrever do observable
   private  destroy$ = new Subject<void>()
   loginCard = true
@@ -36,6 +39,10 @@ export class HomeComponent implements OnDestroy{
     private messageService : MessageService,
     private router : Router
     ) { }
+  ngAfterViewInit(): void {
+    this.emailInputRef.nativeElement.value = 'teste6@gmail.com'
+    this.passwordInputRef.nativeElement.value = 'teste6@gmail.com'
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next()
